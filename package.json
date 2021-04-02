@@ -1,0 +1,37 @@
+{
+  "name": "outofmemory",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "outofmemory": "bin/cli.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha --recursive --exit --timeout 1000 test/",
+    "test:coverage": "nyc --reporter=html --report-dir .coverage mocha --recursive --exit --timeout 500 test/",
+    "lint": "eslint index.js test/"
+  },
+  "engines": {
+    "node": ">= 10"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babar": "0.2.0",
+    "commander": "7.2.0",
+    "oleoduc": "0.5.4"
+  },
+  "devDependencies": {
+    "eslint": "7.21.0",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "3.3.1",
+    "mocha": "8.3.0",
+    "nyc": "15.1.0",
+    "prettier": "2.2.1"
+  },
+  "prettier": {
+    "printWidth": 120
+  }
+}
