@@ -8,10 +8,11 @@ function sleep(ms) {
 
 async function emulateWork(sleepMs = 2500) {
   let data = [];
-  for (let i = 0; i < 2000; i++) {
+  for (let i = 0; i < 200000; i++) {
     data.push(crypto.randomBytes(4096).toString("hex"));
-    console.log(`Dummy data generated  ${data.length}`);
+    console.log(`Dummy data added into memory ${data.length}. Waiting ${sleepMs}ms`);
     await sleep(sleepMs);
   }
 }
-emulateWork(parseInt(process.argv[1]) || 512);
+
+emulateWork(parseInt(process.argv[2]) || 250);

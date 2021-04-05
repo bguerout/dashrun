@@ -4,23 +4,33 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "outofmemory": "bin/cli.js"
+    "outofmemory": "bin/cli.js",
+    "pouet": "bin/cli.js"
   },
   "scripts": {
     "start": "node index.js",
-    "test": "mocha --recursive --exit --timeout 1000 test/",
+    "test": "mocha --recursive --exit --timeout 1000 test/**/*.test.js",
     "test:coverage": "nyc --reporter=html --report-dir .coverage mocha --recursive --exit --timeout 500 test/",
     "lint": "eslint index.js test/"
   },
   "engines": {
     "node": ">= 10"
   },
+  "keywords": [
+    "memory",
+    "heap",
+    "rss",
+    "dashboard",
+    "terminal",
+    "blessed"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "babar": "0.2.0",
+    "blessed": "0.1.81",
+    "blessed-contrib": "4.8.21",
     "commander": "7.2.0",
-    "oleoduc": "0.5.4"
+    "wait-until": "0.0.2"
   },
   "devDependencies": {
     "eslint": "7.21.0",

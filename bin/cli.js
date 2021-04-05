@@ -1,23 +1,20 @@
 #!/usr/bin/env node
-const path = require("path");
 const { program } = require("commander");
-const { measure } = require("../index");
+const { start } = require("../index");
 
-function sanitizeArgv(script) {
-  //Make process.argv the same as if this script was executed with node command
+function getScriptArgs(script) {
   let index = process.argv.findIndex((arg) => arg === script);
-  process.argv.splice(0, index);
+  return process.argv.slice(index + 1, process.argv.length);
 }
+
 program
   .arguments("<script>")
-  .option("--frequency <frequency>", "The frequency in ms to request memory usage", 2500)
   .description("Start to measure memory usage", {
     script: "The script.js to watch",
   })
-  .action((script, { frequency }) => {
-    measure({ frequency });
-    sanitizeArgv(script);
-    require(path.resolve(script));
+  .action((script) => {
+    let args = getScriptArgs(script);
+    start(script, args);
   });
 
 program.parse(process.argv);

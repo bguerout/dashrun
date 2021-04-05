@@ -1,11 +1,17 @@
-# outofmemory
+# watch-memory
 
-Watch memory usage of a node.js script from CLI
-
-Graphs are generated with [babar](https://github.com/stephan83/babar) and are streamed to `stderr` to prevent `stdout` to
-be [cluttered](https://www.pixelstech.net/article/1326560863-When-to-use-STDERR-instead-of-STDOUT)
-
+Watch memory of a node.js script on a terminal dashboard.
 
 ```shell
-npx memory-usage your_script.js > script.log
+npx watch-memory your_script.js [arg...]
 ```
+
+Can be used through ssh connections or inside a docker container.
+
+```shell
+docker exec -it <container_name> npx watch-memory your_script.js [arg...]
+```
+
+*Dashboard are generated using [blessed-contrib](https://www.npmjs.com/package/blessed-contrib)*
+
+

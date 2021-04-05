@@ -1,16 +1,32 @@
-const { oleoduc, writeData } = require("oleoduc");
-const Graph = require("./lib/Graph");
-const rss = require("./lib/probes/rss");
+const fork = require("./lib/fork");
+const Dashboard = require("./lib/Dashboard");
 
-function measure(options = {}) {
-  let { output = process.stderr, ...probeOptions } = options;
-  let graph = new Graph(output);
+function start(script, args) {
+  let dashboard = new Dashboard();
+  let maxRss = dashboard.activateMaxRss();
+  let logger = dashboard.activateLogger();
+  let memory = dashboard.activateMemory([
+    { name: "rss", color: "red" },
+    { name: "heapTotal", color: "yellow" },
+    { name: "heapUsed", color: "green" },
+  ]);
 
-  return oleoduc(
-    rss(probeOptions),
-    writeData((data) => graph.add(data)),
-    { promisify: false }
-  );
+  dashboard.render();
+
+  let { events } = fork(script, args);
+
+  events.on("log", (chunk) => {
+    logger.add(chunk.toString());
+    dashboard.render();
+  });
+
+  events.on("memory", (usage) => {
+    memory.addUsage("rss", usage.rss);
+    memory.addUsage("heapTotal", usage.heapTotal);
+    memory.addUsage("heapUsed", usage.heapUsed);
+    maxRss.set(usage.rss);
+    dashboard.render();
+  });
 }
 
-module.exports = { measure };
+module.exports = { start };
