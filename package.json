@@ -1,7 +1,7 @@
 {
   "name": "watch-memory",
   "version": "0.1.0",
-  "description": "",
+  "description": "Run a node.js script and watch its memory usage on a terminal dashboard",
   "main": "index.js",
   "bin": "bin/cli.js",
   "scripts": {
