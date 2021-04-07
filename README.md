@@ -1,6 +1,6 @@
 # watch-memory
 
-Watch memory of a node.js script on a terminal dashboard.
+Run a node.js script and watch its memory usage on a terminal dashboard.
 
 ```shell
 npx watch-memory your_script.js [arg...]

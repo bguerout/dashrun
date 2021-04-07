@@ -9,8 +9,8 @@ function getScriptArgs(script) {
 
 program
   .arguments("<script>")
-  .description("Start to measure memory usage", {
-    script: "The script.js to watch",
+  .description("Run the node.js script and watch its memory usage", {
+    script: "The script.js to run and watch",
   })
   .action((script) => {
     let args = getScriptArgs(script);

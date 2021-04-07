@@ -1,12 +1,9 @@
 {
-  "name": "outofmemory",
+  "name": "watch-memory",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "bin": {
-    "outofmemory": "bin/cli.js",
-    "pouet": "bin/cli.js"
-  },
+  "bin": "bin/cli.js",
   "scripts": {
     "start": "node index.js",
     "test": "mocha --recursive --exit --timeout 1000 test/**/*.test.js",
@@ -24,8 +21,10 @@
     "terminal",
     "blessed"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Benoît Guérout"
+  },
+  "license": "Apache-2.0",
   "dependencies": {
     "blessed": "0.1.81",
     "blessed-contrib": "4.8.21",
