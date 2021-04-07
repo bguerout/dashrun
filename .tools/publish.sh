@@ -2,7 +2,7 @@
 set -euo pipefail
 
 readonly PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
-readonly NPM_AUTH_TOKEN="${NPM_AUTH_TOKEN:?'NPM_AUTH_TOKEN env variable must exist'}"
+readonly NPM_CONFIG_TOKEN="${NPM_CONFIG_TOKEN:?'NPM_CONFIG_TOKEN env variable must exist'}"
 
 function safeguard {
   local release_version="${1}"
@@ -23,7 +23,7 @@ function clean_resources {
     echo "Cleaning resources..."
     repo_dir="$(mktemp --dry-run)"
     pkill -P $$
-    find "${TMPDIR:-"$(dirname "${repo_dir}")"}" -depth -type d -name "oleoduc" -exec rm -rf {} \;
+    find "${TMPDIR:-"$(dirname "${repo_dir}")"}" -depth -type d -name "watch-memory" -exec rm -rf {} \;
 }
 
 function main {
@@ -35,7 +35,7 @@ function main {
 
   cd "${PROJECT_DIR}"
   release_version=$(node -e "console.log(require('./package.json').version);")
-  repo_dir=$(mktemp -d -t "oleoduc-bare-repo-XXXXX")
+  repo_dir=$(mktemp -d -t "watch-memory-bare-repo-XXXXX")
   repo_url=$(git --git-dir "${PROJECT_DIR}/.git" config --get remote.origin.url)
   cd -
 
