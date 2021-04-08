@@ -12,6 +12,8 @@ Can be used through ssh connections or inside a docker container.
 docker exec -it <container_name> npx watch-memory your_script.js [arg...]
 ```
 
+![image](https://user-images.githubusercontent.com/221211/113982536-2d00e500-9849-11eb-83b9-7bf2c5fdee0a.png)
+
 *Dashboard are generated using [blessed-contrib](https://www.npmjs.com/package/blessed-contrib)*
 
 
