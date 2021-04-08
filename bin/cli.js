@@ -2,7 +2,7 @@
 const { program } = require("commander");
 const { start } = require("../index");
 
-function getScriptArgs(script) {
+function getScriptArgv(script) {
   let index = process.argv.findIndex((arg) => arg === script);
   return process.argv.slice(index + 1, process.argv.length);
 }
@@ -13,8 +13,8 @@ program
     script: "The script.js to run and watch",
   })
   .action((script) => {
-    let args = getScriptArgs(script);
-    start(script, args);
+    let argv = getScriptArgv(script);
+    start(script, argv);
   });
 
 program.parse(process.argv);

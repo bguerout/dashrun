@@ -1,10 +1,10 @@
 const fork = require("./lib/fork");
 const Dashboard = require("./lib/Dashboard");
 
-function start(script, args) {
+function start(script, argv) {
   let dashboard = new Dashboard();
   let maxRss = dashboard.activateMaxRss();
-  let logger = dashboard.activateLogger();
+  let logger = dashboard.activateLogger(`$ node ${script} ${argv.join(" ")}`);
   let memory = dashboard.activateMemory([
     { name: "rss", color: "red" },
     { name: "heapTotal", color: "yellow" },
@@ -13,7 +13,7 @@ function start(script, args) {
 
   dashboard.render();
 
-  let { events } = fork(script, args);
+  let { events } = fork(script, { argv });
 
   events.on("output", (chunk) => {
     logger.add(chunk.toString());
