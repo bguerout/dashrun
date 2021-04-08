@@ -21,15 +21,20 @@
     "terminal",
     "blessed"
   ],
-  "author": {
-    "name": "Benoît Guérout"
-  },
+  "author": "Benoît Guérout",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bguerout/watch-memory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bguerout/watch-memory/issues"
+  },
+  "homepage": "https://github.com/bguerout/watch-memory#readme",
   "dependencies": {
     "blessed": "0.1.81",
     "blessed-contrib": "4.8.21",
-    "commander": "7.2.0",
-    "wait-until": "0.0.2"
+    "commander": "7.2.0"
   },
   "devDependencies": {
     "eslint": "7.21.0",
@@ -38,7 +43,8 @@
     "eslint-plugin-prettier": "3.3.1",
     "mocha": "8.3.0",
     "nyc": "15.1.0",
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "wait-until": "0.0.2"
   },
   "prettier": {
     "printWidth": 120
