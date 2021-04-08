@@ -9,15 +9,26 @@ function getUtilFile(filename) {
 }
 
 describe(__filename, () => {
-  let probe = getUtilFile("test-probe.js");
+  let probe = getUtilFile("probes/noop-probe.js");
 
   it("can get message from the forked script", (done) => {
     let script = getUtilFile("stdout.js");
 
-    let { events } = fork(script, { probe });
+    let { events } = fork(script, { probe: getUtilFile("probes/message-probe.js") });
 
     events.on("test", (data) => {
       assert.strictEqual(data, "message sent from child");
+      done();
+    });
+  });
+
+  it("can fork script with args", (done) => {
+    let script = getUtilFile("noop.js");
+
+    let { events } = fork(script, { argv: ["param1"], probe: getUtilFile("probes/argv-probe.js") });
+
+    events.on("test", (argv) => {
+      assert.strictEqual(argv[2], "param1");
       done();
     });
   });
