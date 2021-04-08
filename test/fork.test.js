@@ -27,11 +27,11 @@ describe(__filename, () => {
 
     let { events } = fork(script, { probe });
 
-    let logs = [];
-    events.on("log", (chunk) => {
-      logs.push(chunk.toString());
-      if (logs.length >= 2) {
-        assert.deepStrictEqual(logs, ["message from stdout\n", "Script exits with code 0"]);
+    let output = [];
+    events.on("output", (chunk) => {
+      output.push(chunk.toString());
+      if (output.length >= 2) {
+        assert.deepStrictEqual(output, ["message from stdout\n", "Script exits with code 0"]);
         done();
       }
     });
@@ -42,11 +42,11 @@ describe(__filename, () => {
 
     let { events } = fork(script, { probe });
 
-    let logs = [];
-    events.on("log", (chunk) => {
-      logs.push(chunk.toString());
-      if (logs.length >= 2) {
-        assert.deepStrictEqual(logs, ["message from stderr\n", "Script exits with code 0"]);
+    let output = [];
+    events.on("output", (chunk) => {
+      output.push(chunk.toString());
+      if (output.length >= 2) {
+        assert.deepStrictEqual(output, ["message from stderr\n", "Script exits with code 0"]);
         done();
       }
     });
@@ -57,14 +57,14 @@ describe(__filename, () => {
 
     let { events } = fork(script, { probe });
 
-    let logs = [];
-    events.on("log", (chunk) => logs.push(chunk.toString()));
+    let output = [];
+    events.on("output", (chunk) => output.push(chunk.toString()));
 
     waitUntil()
       .interval(10)
       .times(10)
       .condition(() => {
-        return logs.find((l) => l.indexOf("this is an error") !== -1);
+        return output.find((l) => l.indexOf("this is an error") !== -1);
       })
       .done(async (result) => {
         result ? done() : assert.fail("timeout");
@@ -76,13 +76,13 @@ describe(__filename, () => {
 
     let { events } = fork(script, { probe });
 
-    let logs = [];
-    events.on("log", (chunk) => logs.push(chunk.toString()));
+    let output = [];
+    events.on("output", (chunk) => output.push(chunk.toString()));
 
     waitUntil()
       .interval(10)
       .times(50)
-      .condition(() => logs.find((l) => l.indexOf("this is an async error") !== -1))
+      .condition(() => output.find((l) => l.indexOf("this is an async error") !== -1))
       .done(async (result) => {
         result ? done() : assert.fail("timeout");
       });
@@ -93,13 +93,13 @@ describe(__filename, () => {
 
     let { events } = fork(script, { probe });
 
-    let logs = [];
-    events.on("log", (chunk) => logs.push(chunk.toString()));
+    let output = [];
+    events.on("output", (chunk) => output.push(chunk.toString()));
 
     waitUntil()
       .interval(10)
       .times(50)
-      .condition(() => logs.find((l) => l.indexOf("Script exits with code 1") !== -1))
+      .condition(() => output.find((l) => l.indexOf("Script exits with code 1") !== -1))
       .done(async (result) => {
         result ? done() : assert.fail("timeout");
       });

@@ -15,7 +15,7 @@ function start(script, args) {
 
   let { events } = fork(script, args);
 
-  events.on("log", (chunk) => {
+  events.on("output", (chunk) => {
     logger.add(chunk.toString());
     dashboard.render();
   });
