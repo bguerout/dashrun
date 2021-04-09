@@ -30,7 +30,7 @@ function clean_resources() {
   echo "Cleaning resources..."
   repo_dir="$(mktemp --dry-run)"
   pkill -P $$
-  find "${TMPDIR:-"$(dirname "${repo_dir}")"}" -depth -type d -name "watch-memory" -exec rm -rf {} \;
+  find "${TMPDIR:-"$(dirname "${repo_dir}")"}" -depth -type d -name "dashrun" -exec rm -rf {} \;
 }
 
 function main() {
@@ -42,7 +42,7 @@ function main() {
 
   cd "${PROJECT_DIR}"
   release_version=$(node -e "console.log(require('./package.json').version);")
-  repo_dir=$(mktemp -d -t "watch-memory-bare-repo-XXXXX")
+  repo_dir=$(mktemp -d -t "dashrun-bare-repo-XXXXX")
   repo_url=$(git --git-dir "${PROJECT_DIR}/.git" config --get remote.origin.url)
   cd -
 
