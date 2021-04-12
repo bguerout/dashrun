@@ -1,20 +1,16 @@
 // eslint-disable-next-line node/no-unpublished-require
 const waitUntil = require("wait-until");
 const assert = require("assert");
-const path = require("path");
 const runScript = require("../lib/runScript");
-
-function getUtilFile(filename) {
-  return path.join(__dirname, "utils", filename);
-}
+const { getScript, getProbe } = require("./utils/testUtils");
 
 describe(__filename, () => {
-  let probes = [getUtilFile("probes/noop-probe.js")];
+  let probes = [getProbe("noop-probe.js")];
 
   it("can get message from the running script", (done) => {
-    let script = getUtilFile("stdout.js");
+    let script = getScript("stdout.js");
 
-    let { events } = runScript(script, [getUtilFile("probes/message-probe.js")]);
+    let { events } = runScript(script, [getProbe("message-probe.js")]);
 
     events.on("test", (data) => {
       assert.strictEqual(data, "message sent from child");
@@ -23,9 +19,9 @@ describe(__filename, () => {
   });
 
   it("can run script with args", (done) => {
-    let script = getUtilFile("noop.js");
+    let script = getScript("noop.js");
 
-    let { events } = runScript(script, [getUtilFile("probes/argv-probe.js")], { argv: ["param1"] });
+    let { events } = runScript(script, [getProbe("argv-probe.js")], { scriptArgs: ["param1"] });
 
     events.on("test", (argv) => {
       assert.strictEqual(argv[2], "param1");
@@ -34,7 +30,7 @@ describe(__filename, () => {
   });
 
   it("can get stdout from the running script", (done) => {
-    let script = getUtilFile("stdout.js");
+    let script = getScript("stdout.js");
 
     let { events } = runScript(script, probes);
 
@@ -49,7 +45,7 @@ describe(__filename, () => {
   });
 
   it("can get stderr from the running script", (done) => {
-    let script = getUtilFile("stderr.js");
+    let script = getScript("stderr.js");
 
     let { events } = runScript(script, probes);
 
@@ -64,7 +60,7 @@ describe(__filename, () => {
   });
 
   it("can handle script with error", (done) => {
-    let script = getUtilFile("error.js");
+    let script = getScript("error.js");
 
     let { events } = runScript(script, probes);
 
@@ -83,7 +79,7 @@ describe(__filename, () => {
   });
 
   it("can handle script with async error", (done) => {
-    let script = getUtilFile("async-error.js");
+    let script = getScript("async-error.js");
 
     let { events } = runScript(script, probes);
 
@@ -100,7 +96,7 @@ describe(__filename, () => {
   });
 
   it("can handle exit code", (done) => {
-    let script = getUtilFile("exit.js");
+    let script = getScript("exit.js");
 
     let { events } = runScript(script, probes);
 
