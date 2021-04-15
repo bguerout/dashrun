@@ -1,20 +1,16 @@
 // eslint-disable-next-line node/no-unpublished-require
 const waitUntil = require("wait-until");
 const assert = require("assert");
-const path = require("path");
-const fork = require("../lib/fork");
-
-function getUtilFile(filename) {
-  return path.join(__dirname, "utils", filename);
-}
+const runScript = require("../lib/runScript");
+const { getScript, getProbe } = require("./utils/testUtils");
 
 describe(__filename, () => {
-  let probe = getUtilFile("probes/noop-probe.js");
+  let probes = [getProbe("noop-probe.js")];
 
-  it("can get message from the forked script", (done) => {
-    let script = getUtilFile("stdout.js");
+  it("can get message from the running script", (done) => {
+    let script = getScript("stdout.js");
 
-    let { events } = fork(script, { probe: getUtilFile("probes/message-probe.js") });
+    let { events } = runScript(script, [getProbe("message-probe.js")]);
 
     events.on("test", (data) => {
       assert.strictEqual(data, "message sent from child");
@@ -22,10 +18,10 @@ describe(__filename, () => {
     });
   });
 
-  it("can fork script with args", (done) => {
-    let script = getUtilFile("noop.js");
+  it("can run script with args", (done) => {
+    let script = getScript("noop.js");
 
-    let { events } = fork(script, { argv: ["param1"], probe: getUtilFile("probes/argv-probe.js") });
+    let { events } = runScript(script, [getProbe("argv-probe.js")], { scriptArgs: ["param1"] });
 
     events.on("test", (argv) => {
       assert.strictEqual(argv[2], "param1");
@@ -33,10 +29,10 @@ describe(__filename, () => {
     });
   });
 
-  it("can get stdout from the forked script", (done) => {
-    let script = getUtilFile("stdout.js");
+  it("can get stdout from the running script", (done) => {
+    let script = getScript("stdout.js");
 
-    let { events } = fork(script, { probe });
+    let { events } = runScript(script, probes);
 
     let output = [];
     events.on("output", (chunk) => {
@@ -48,10 +44,10 @@ describe(__filename, () => {
     });
   });
 
-  it("can get stderr from the forked script", (done) => {
-    let script = getUtilFile("stderr.js");
+  it("can get stderr from the running script", (done) => {
+    let script = getScript("stderr.js");
 
-    let { events } = fork(script, { probe });
+    let { events } = runScript(script, probes);
 
     let output = [];
     events.on("output", (chunk) => {
@@ -64,9 +60,9 @@ describe(__filename, () => {
   });
 
   it("can handle script with error", (done) => {
-    let script = getUtilFile("error.js");
+    let script = getScript("error.js");
 
-    let { events } = fork(script, { probe });
+    let { events } = runScript(script, probes);
 
     let output = [];
     events.on("output", (chunk) => output.push(chunk.toString()));
@@ -83,9 +79,9 @@ describe(__filename, () => {
   });
 
   it("can handle script with async error", (done) => {
-    let script = getUtilFile("async-error.js");
+    let script = getScript("async-error.js");
 
-    let { events } = fork(script, { probe });
+    let { events } = runScript(script, probes);
 
     let output = [];
     events.on("output", (chunk) => output.push(chunk.toString()));
@@ -100,9 +96,9 @@ describe(__filename, () => {
   });
 
   it("can handle exit code", (done) => {
-    let script = getUtilFile("exit.js");
+    let script = getScript("exit.js");
 
-    let { events } = fork(script, { probe });
+    let { events } = runScript(script, probes);
 
     let output = [];
     events.on("output", (chunk) => output.push(chunk.toString()));
