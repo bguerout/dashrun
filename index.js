@@ -1,14 +1,14 @@
 module.exports = {
   runScript: require("./lib/runScript"),
-  DashboardLayout: require("./lib/DashboardLayout"),
+  DashboardLayout: require("./lib/blessed/DashboardLayout"),
   components: {
     memoryChart: require("./lib/dashboards/memory/components/memoryChart"),
     maxRss: require("./lib/dashboards/memory/components/maxRss"),
     output: require("./lib/dashboards/memory/components/output"),
   },
   widgets: {
-    memory: require("./lib/widgets/lineChart"),
-    logger: require("./lib/widgets/logger"),
-    max: require("./lib/widgets/max"),
+    memory: require("./lib/blessed/widgets/lineChart"),
+    logger: require("./lib/blessed/widgets/logger"),
+    max: require("./lib/blessed/widgets/max"),
   },
 };
