@@ -46,13 +46,13 @@ Dashrun comes with a thin layer over blessed-contrib to ease dashboard construct
 ```js
 const path = require("path");
 const contrib = require("blessed-contrib");
-const { Layout } = require("dashrun");
+const { DashboardLayout } = require("dashrun");
 
 //A dashboard is just a function taking a callback to run the script as its first argument
 module.exports = (run) => {
 
   //Create a layout and define area where component will be rendered
-  let layout = new Layout();
+  let layout = new DashboardLayout();
   let top = layout.area(0, 0, 6, 12);
 
   //Create a component (using bless-contrib)

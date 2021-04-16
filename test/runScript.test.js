@@ -2,40 +2,40 @@
 const waitUntil = require("wait-until");
 const assert = require("assert");
 const runScript = require("../lib/runScript");
-const { getScript, getProbe } = require("./utils/testUtils");
+const { getScriptFile, getProbeFile } = require("./utils/testUtils");
 
 describe(__filename, () => {
-  let probes = [getProbe("noop-probe.js")];
+  let probes = [getProbeFile("noop-probe.js")];
 
   it("can get message from the running script", (done) => {
-    let script = getScript("stdout.js");
+    let file = getScriptFile("stdout.js");
 
-    let { events } = runScript(script, [getProbe("message-probe.js")]);
+    let script = runScript(file, [getProbeFile("message-probe.js")]);
 
-    events.on("test", (data) => {
+    script.on("test", (data) => {
       assert.strictEqual(data, "message sent from child");
       done();
     });
   });
 
   it("can run script with args", (done) => {
-    let script = getScript("noop.js");
+    let file = getScriptFile("noop.js");
 
-    let { events } = runScript(script, [getProbe("argv-probe.js")], { scriptArgs: ["param1"] });
+    let script = runScript(file, [getProbeFile("argv-probe.js")], { scriptArgs: ["param1"] });
 
-    events.on("test", (argv) => {
+    script.on("test", (argv) => {
       assert.strictEqual(argv[2], "param1");
       done();
     });
   });
 
   it("can get stdout from the running script", (done) => {
-    let script = getScript("stdout.js");
+    let file = getScriptFile("stdout.js");
 
-    let { events } = runScript(script, probes);
+    let script = runScript(file, probes);
 
     let output = [];
-    events.on("output", (chunk) => {
+    script.on("output", (chunk) => {
       output.push(chunk.toString());
       if (output.length >= 2) {
         assert.deepStrictEqual(output, ["message from stdout\n", "Script exits with code 0"]);
@@ -45,12 +45,12 @@ describe(__filename, () => {
   });
 
   it("can get stderr from the running script", (done) => {
-    let script = getScript("stderr.js");
+    let file = getScriptFile("stderr.js");
 
-    let { events } = runScript(script, probes);
+    let script = runScript(file, probes);
 
     let output = [];
-    events.on("output", (chunk) => {
+    script.on("output", (chunk) => {
       output.push(chunk.toString());
       if (output.length >= 2) {
         assert.deepStrictEqual(output, ["message from stderr\n", "Script exits with code 0"]);
@@ -60,12 +60,12 @@ describe(__filename, () => {
   });
 
   it("can handle script with error", (done) => {
-    let script = getScript("error.js");
+    let file = getScriptFile("error.js");
 
-    let { events } = runScript(script, probes);
+    let script = runScript(file, probes);
 
     let output = [];
-    events.on("output", (chunk) => output.push(chunk.toString()));
+    script.on("output", (chunk) => output.push(chunk.toString()));
 
     waitUntil()
       .interval(10)
@@ -79,12 +79,12 @@ describe(__filename, () => {
   });
 
   it("can handle script with async error", (done) => {
-    let script = getScript("async-error.js");
+    let file = getScriptFile("async-error.js");
 
-    let { events } = runScript(script, probes);
+    let script = runScript(file, probes);
 
     let output = [];
-    events.on("output", (chunk) => output.push(chunk.toString()));
+    script.on("output", (chunk) => output.push(chunk.toString()));
 
     waitUntil()
       .interval(10)
@@ -96,12 +96,12 @@ describe(__filename, () => {
   });
 
   it("can handle exit code", (done) => {
-    let script = getScript("exit.js");
+    let file = getScriptFile("exit.js");
 
-    let { events } = runScript(script, probes);
+    let script = runScript(file, probes);
 
     let output = [];
-    events.on("output", (chunk) => output.push(chunk.toString()));
+    script.on("output", (chunk) => output.push(chunk.toString()));
 
     waitUntil()
       .interval(10)
