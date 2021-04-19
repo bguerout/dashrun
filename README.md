@@ -38,38 +38,38 @@ core function.
 
 ### Dashboard
 
-You are free to use any library to create a dashboard but we
-suggest [blessed-contrib](https://www.npmjs.com/package/blessed-contrib)
+You are free to use any library to create a dashboard.
 
-Dashrun comes with a thin layer over blessed-contrib to ease dashboard construction.
+You should use [blessed-contrib](https://www.npmjs.com/package/blessed-contrib) because dashrun comes with a thin layer
+over it to ease dashboard construction.
 
 ```js
 const path = require("path");
 const contrib = require("blessed-contrib");
 const { DashboardLayout } = require("dashrun");
 
-//A dashboard is just a function taking a callback to run the script as its first argument
+//A dashboard is just a function taking a callback to run the script
 module.exports = (run) => {
 
-  //Create a layout and define area where component will be rendered
+  //Create a layout and define area where bless-contrib components will be rendered
   let layout = new DashboardLayout();
   let top = layout.area(0, 0, 6, 12);
 
-  //Create a component (using bless-contrib)
+  //Create a component
   let component = contrib.lcd({
     label: "Current value",
     color: "red",
-    ...top,
+    ...top, //Set area
   });
   layout.add(component);
   layout.render();
 
   //Run the script
   let probe = path.join(__dirname, "myProbe.js");
-  let { events } = run([probe]);
+  let script = run([probe]);
 
-  //Listen to event sent by the probe and update component
-  events.on("memory", (usage) => {
+  //Listen to events sent by the probe and update component
+  script.on("memory", (usage) => {
     component.setDisplay(usage.rss);
     layout.render();
   });
