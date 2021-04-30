@@ -3,7 +3,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:node/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:mocha/recommended"
   ],
   "env": {
     "node": true,

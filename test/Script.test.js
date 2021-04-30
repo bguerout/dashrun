@@ -4,10 +4,10 @@ const assert = require("assert");
 const Script = require("../lib/Script");
 const { getScriptFile, getProbeFile } = require("./utils/testUtils");
 
-describe(__filename, () => {
-  let probes = [getProbeFile("noop-probe.js")];
+let probes = [getProbeFile("noop-probe.js")];
 
-  it("can get message from the running script", (done) => {
+describe(__filename, function () {
+  it("can get message from the running script", function (done) {
     let file = getScriptFile("stdout.js");
     let script = new Script(file);
 
@@ -19,7 +19,7 @@ describe(__filename, () => {
     });
   });
 
-  it("can run script with args", (done) => {
+  it("can run script with args", function (done) {
     let file = getScriptFile("noop.js");
     let script = new Script(file, { scriptArgs: ["param1"] });
 
@@ -31,7 +31,7 @@ describe(__filename, () => {
     });
   });
 
-  it("can get stdout from the running script", (done) => {
+  it("can get stdout from the running script", function (done) {
     let file = getScriptFile("stdout.js");
     let script = new Script(file);
 
@@ -47,7 +47,7 @@ describe(__filename, () => {
     });
   });
 
-  it("can get stderr from the running script", (done) => {
+  it("can get stderr from the running script", function (done) {
     let file = getScriptFile("stderr.js");
     let script = new Script(file);
 
@@ -63,7 +63,7 @@ describe(__filename, () => {
     });
   });
 
-  it("can handle script with error", (done) => {
+  it("can handle script with error", function (done) {
     let file = getScriptFile("error.js");
     let script = new Script(file);
 
@@ -83,7 +83,7 @@ describe(__filename, () => {
       });
   });
 
-  it("can handle script with async error", (done) => {
+  it("can handle script with async error", function (done) {
     let file = getScriptFile("async-error.js");
     let script = new Script(file);
 
@@ -101,7 +101,7 @@ describe(__filename, () => {
       });
   });
 
-  it("can handle exit code", (done) => {
+  it("can handle exit code", function (done) {
     let file = getScriptFile("exit.js");
     let script = new Script(file);
 
