@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const { program } = require("commander");
-const runScript = require("../lib/runScript");
+const Script = require("../lib/Script");
 
 const dashboards = {
   memory: require("../lib/dashboards/memory"),
@@ -12,15 +12,14 @@ function getScriptArgs(script) {
 }
 
 program
-  .arguments("<script>")
+  .arguments("<file>")
   .option("-d, --dashboard <dashboard>", "The name of the dashboard to use (default: memory)", "memory")
   .description("Run the node.js script and render a dashboard with memory usage", {
-    script: "The script.js to run",
+    file: "The script file to run",
   })
-  .action((script, { dashboard }) => {
-    dashboards[dashboard]((probes = []) => {
-      return runScript(script, probes, { scriptArgs: getScriptArgs(script) });
-    });
+  .action((file, { dashboard }) => {
+    let script = new Script(file, { scriptArgs: getScriptArgs(file) });
+    dashboards[dashboard](script);
   });
 
 program.parse(process.argv);

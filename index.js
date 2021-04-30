@@ -1,5 +1,5 @@
 module.exports = {
-  runScript: require("./lib/runScript"),
+  Script: require("./lib/Script"),
   DashboardLayout: require("./lib/blessed/DashboardLayout"),
   components: {
     memoryChart: require("./lib/dashboards/memory/components/memoryChart"),

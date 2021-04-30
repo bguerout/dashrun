@@ -1,7 +1,7 @@
 // eslint-disable-next-line node/no-unpublished-require
 const waitUntil = require("wait-until");
 const assert = require("assert");
-const runScript = require("../lib/runScript");
+const Script = require("../lib/Script");
 const { getScriptFile, getProbeFile } = require("./utils/testUtils");
 
 describe(__filename, () => {
@@ -9,8 +9,9 @@ describe(__filename, () => {
 
   it("can get message from the running script", (done) => {
     let file = getScriptFile("stdout.js");
+    let script = new Script(file);
 
-    let script = runScript(file, [getProbeFile("message-probe.js")]);
+    script.run([getProbeFile("message-probe.js")]);
 
     script.on("test", (data) => {
       assert.strictEqual(data, "message sent from child");
@@ -20,8 +21,9 @@ describe(__filename, () => {
 
   it("can run script with args", (done) => {
     let file = getScriptFile("noop.js");
+    let script = new Script(file, { scriptArgs: ["param1"] });
 
-    let script = runScript(file, [getProbeFile("argv-probe.js")], { scriptArgs: ["param1"] });
+    script.run([getProbeFile("argv-probe.js")]);
 
     script.on("test", (argv) => {
       assert.strictEqual(argv[2], "param1");
@@ -31,8 +33,9 @@ describe(__filename, () => {
 
   it("can get stdout from the running script", (done) => {
     let file = getScriptFile("stdout.js");
+    let script = new Script(file);
 
-    let script = runScript(file, probes);
+    script.run(probes);
 
     let output = [];
     script.on("output", (chunk) => {
@@ -46,8 +49,9 @@ describe(__filename, () => {
 
   it("can get stderr from the running script", (done) => {
     let file = getScriptFile("stderr.js");
+    let script = new Script(file);
 
-    let script = runScript(file, probes);
+    script.run(probes);
 
     let output = [];
     script.on("output", (chunk) => {
@@ -61,8 +65,9 @@ describe(__filename, () => {
 
   it("can handle script with error", (done) => {
     let file = getScriptFile("error.js");
+    let script = new Script(file);
 
-    let script = runScript(file, probes);
+    script.run(probes);
 
     let output = [];
     script.on("output", (chunk) => output.push(chunk.toString()));
@@ -80,8 +85,9 @@ describe(__filename, () => {
 
   it("can handle script with async error", (done) => {
     let file = getScriptFile("async-error.js");
+    let script = new Script(file);
 
-    let script = runScript(file, probes);
+    script.run(probes);
 
     let output = [];
     script.on("output", (chunk) => output.push(chunk.toString()));
@@ -97,8 +103,9 @@ describe(__filename, () => {
 
   it("can handle exit code", (done) => {
     let file = getScriptFile("exit.js");
+    let script = new Script(file);
 
-    let script = runScript(file, probes);
+    script.run(probes);
 
     let output = [];
     script.on("output", (chunk) => output.push(chunk.toString()));
