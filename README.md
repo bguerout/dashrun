@@ -14,25 +14,26 @@ dashrun comes with a built-in memory dashboard and allows you to create custom o
 
 ### Probe
 
-You need first to create a `probe` to send data from the forked process to the dashboard.
+You need first to create a `probe` to send message from the forked process to the dashboard.
 
 A probe can be a simple line of code in your script:
 
 ```js
-process.send({ type: "memory", data: process.memoryUsage() });
+let message = { type: "memory", data: process.memoryUsage() };
+process.send(message);
 ```
 
 or a file:
 
 ```js
-//myProbe.js (Dashrun will automatically inject this file into your script)
+//myProbe.js (dashrun will automatically inject this file into your script)
 setInterval(() => {
-  //Sending every second to the dashboard the memory usage of the forked script
+  //Sending every second to the dashboard a message with the memory usage of the forked script
   process.send({ type: "memory", data: process.memoryUsage() });
 }, 1000);
 ```
 
-Note that data must be sent
+Note that message must be sent
 with [process.send](https://nodejs.org/api/process.html#process_process_send_message_sendhandle_options_callback)
 core function.
 
@@ -40,7 +41,7 @@ core function.
 
 You are free to use any library to create a dashboard.
 
-You should use [blessed-contrib](https://www.npmjs.com/package/blessed-contrib) because dashrun comes with a thin layer
+[blessed-contrib](https://www.npmjs.com/package/blessed-contrib) is a good choice and dashrun comes with a thin layer
 over it to ease dashboard construction.
 
 ```js
