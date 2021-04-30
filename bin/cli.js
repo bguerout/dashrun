@@ -6,19 +6,16 @@ const dashboards = {
   memory: require("../lib/dashboards/memory"),
 };
 
-function getScriptArgs(script) {
-  let index = process.argv.findIndex((arg) => arg === script);
-  return process.argv.slice(index + 1, process.argv.length);
-}
-
 program
-  .arguments("<file>")
+  .passThroughOptions()
+  .arguments("<file> [args...]")
   .option("-d, --dashboard <dashboard>", "The name of the dashboard to use (default: memory)", "memory")
   .description("Run the node.js script and render a dashboard with memory usage", {
     file: "The script file to run",
+    args: "The arguments needed by the script file",
   })
-  .action((file, { dashboard }) => {
-    let script = new Script(file, { scriptArgs: getScriptArgs(file) });
+  .action((file, args, { dashboard }) => {
+    let script = new Script(file, { scriptArgs: args });
     dashboards[dashboard](script);
   });
 
