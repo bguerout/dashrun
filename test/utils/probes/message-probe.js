@@ -1,3 +1,3 @@
 setTimeout(() => {
-  process.send({ type: "test", data: "message sent from child" });
+  process.send({ eventName: "test", data: "message sent from child" });
 }, 50);

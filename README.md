@@ -19,7 +19,7 @@ You need first to create a `probe` to send message from the forked process to th
 A probe can be a simple line of code in your script:
 
 ```js
-let message = { type: "memory", data: process.memoryUsage() };
+let message = { eventName: "myEvent", data: Math.random() };
 process.send(message);
 ```
 
@@ -28,8 +28,8 @@ or a file:
 ```js
 //myProbe.js (dashrun will automatically inject this file into your script)
 setInterval(() => {
-  //Sending every second to the dashboard a message with the memory usage of your script
-  process.send({ type: "memory", data: process.memoryUsage() });
+  //Sending every second to the dashboard a message with a random value
+  process.send({ eventName: "myEvent", data: Math.random() });
 }, 1000);
 ```
 
@@ -39,16 +39,16 @@ core function.
 
 ### Dashboard
 
-You are free to use any library to create a dashboard.
-A dashboard is just a function taking a callback to run the script
+A dashboard is a function whose role is to ensure that the events sent by the script are rendered on the terminal
 
 ```js
 module.exports = (run) => {
-  //Render something here and then call run callback
+  //Render something, run the script and then listen to events
 };
 ```
 
-[blessed-contrib](https://www.npmjs.com/package/blessed-contrib) library is a good choice and dashrun comes with a thin layer
+You are free to use any library to create a dashboard. 
+[blessed-contrib](https://www.npmjs.com/package/blessed-contrib) is a good choice and dashrun comes with a thin layer
 over it to ease dashboard construction.
 
 ```js
@@ -62,7 +62,7 @@ module.exports = (run) => {
   let layout = new DashboardLayout();
   let top = layout.area(0, 0, 6, 12);
 
-  //Create a component
+  //Create a component, add it to layout and then render
   let component = contrib.lcd({
     label: "Current value",
     color: "red",
@@ -71,13 +71,13 @@ module.exports = (run) => {
   layout.add(component);
   layout.render();
 
-  //Run the script
+  //Run the script with your custom probe
   let probe = path.join(__dirname, "myProbe.js");
   let script = run([probe]);
 
   //Listen to events sent by the probe and update component
-  script.on("memory", (usage) => {
-    component.setDisplay(usage.rss);
+  script.on("myEvent", (data) => {
+    component.setDisplay(data);
     layout.render();
   });
 };
