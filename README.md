@@ -28,7 +28,7 @@ or a file:
 ```js
 //myProbe.js (dashrun will automatically inject this file into your script)
 setInterval(() => {
-  //Sending every second to the dashboard a message with the memory usage of the forked script
+  //Sending every second to the dashboard a message with the memory usage of your script
   process.send({ type: "memory", data: process.memoryUsage() });
 }, 1000);
 ```
@@ -40,8 +40,15 @@ core function.
 ### Dashboard
 
 You are free to use any library to create a dashboard.
+A dashboard is just a function taking a callback to run the script
 
-[blessed-contrib](https://www.npmjs.com/package/blessed-contrib) is a good choice and dashrun comes with a thin layer
+```js
+module.exports = (run) => {
+  //Render something here and then call run callback
+};
+```
+
+[blessed-contrib](https://www.npmjs.com/package/blessed-contrib) library is a good choice and dashrun comes with a thin layer
 over it to ease dashboard construction.
 
 ```js
@@ -49,7 +56,6 @@ const path = require("path");
 const contrib = require("blessed-contrib");
 const { DashboardLayout } = require("dashrun");
 
-//A dashboard is just a function taking a callback to run the script
 module.exports = (run) => {
 
   //Create a layout and define area where bless-contrib components will be rendered
