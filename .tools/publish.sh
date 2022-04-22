@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-readonly PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/.."
-readonly AUTH_TOKEN="${AUTH_TOKEN:?'AUTH_TOKEN env variable must exist'}"
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly PROJECT_DIR="${SCRIPT_DIR}/.."
+readonly NPM_TOKEN="${NPM_TOKEN:?'NPM_TOKEN env variable must exist'}"
 
 function safeguard() {
   local release_version="${1}"
 
-  echo "Checking if AUTH_TOKEN is valid..."
-  NPM_CONFIG_TOKEN="${AUTH_TOKEN}" npm token list --json >/dev/null 2>&1 || {
-    echo "AUTH_TOKEN is invalid"
+  echo "Checking if NPM_TOKEN is valid..."
+  AUTH_TOKEN="${NPM_TOKEN}" npm --userconfig "${SCRIPT_DIR}/.npmrc" token list --json >/dev/null 2>&1 || {
+    echo "NPM_TOKEN is invalid"
     exit 1
   }
-  echo "AUTH_TOKEN is valid and can be used to publish."
+  echo "NPM_TOKEN is valid and can be used to publish."
 
   while true; do
     read -p $'[WARN] Do you really want to publish version '"$release_version"$' (y/n) ?' yn
@@ -34,7 +35,7 @@ function clean_resources() {
 }
 
 function main() {
-  local branch_name="${1:?"Please provide a branch name (eg. master)"}"
+  local branch_name="${1:?"Please provide a branch name (eg. main)"}"
   local release_version
   local next_version
   local repo_dir
@@ -60,7 +61,7 @@ function main() {
   git push origin "${release_version}"
 
   echo "Publishing module into npm repository..."
-  NPM_CONFIG_TOKEN="${AUTH_TOKEN}" npm publish
+  AUTH_TOKEN="${NPM_TOKEN}" npm --userconfig "${SCRIPT_DIR}/.npmrc" publish
 
   echo "Preparing project for next release..."
   npm version patch --no-git-tag-version
