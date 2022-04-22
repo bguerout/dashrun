@@ -14,7 +14,7 @@ dashrun comes with a built-in memory dashboard and allows you to create custom o
 
 ### Probe
 
-You need first to create a `probe` to send message from the forked process to the dashboard.
+You need first to create a `probe` to send message from your script (forked process) to the dashboard.
 
 A probe can be a simple line of code in your script:
 
@@ -39,15 +39,18 @@ core function.
 
 ### Dashboard
 
-A dashboard is a function whose role is to ensure that the events sent by the script are rendered on the terminal
+A dashboard is a function whose role is to run the script and render informations when script fires events.
 
 ```js
-module.exports = (run) => {
-  //Render something, run the script and then listen to events
+module.exports = (script) => {
+  // Prepare UI components
+  // Run the script
+  // Update UI components on new script events
 };
 ```
 
-You are free to use any library to create a dashboard. 
+You are free to use any library to create a dashboard.
+
 [blessed-contrib](https://www.npmjs.com/package/blessed-contrib) is a good choice and dashrun comes with a thin layer
 over it to ease dashboard construction.
 
@@ -56,24 +59,25 @@ const path = require("path");
 const contrib = require("blessed-contrib");
 const { DashboardLayout } = require("dashrun");
 
-module.exports = (run) => {
+module.exports = (script) => {
 
   //Create a layout and define area where bless-contrib components will be rendered
   let layout = new DashboardLayout();
-  let top = layout.area(0, 0, 6, 12);
+  let topLeft = layout.area(0, 0, 6, 6);
+  let topRight = layout.area(0, 6, 6, 6);
 
   //Create a component, add it to layout and then render
   let component = contrib.lcd({
     label: "Current value",
     color: "red",
-    ...top, //Set area
+    ...topLeft, //Set position of the component
   });
   layout.add(component);
   layout.render();
 
   //Run the script with your custom probe
   let probe = path.join(__dirname, "myProbe.js");
-  let script = run([probe]);
+  script.run([probe]);
 
   //Listen to events sent by the probe and update component
   script.on("myEvent", (data) => {
