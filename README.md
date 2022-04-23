@@ -1,5 +1,9 @@
 # dashrun
 
+[![NPM](https://img.shields.io/npm/v/dashrun.svg)](https://www.npmjs.com/package/dashrun)
+![ci](https://github.com/bguerout/dashrun/actions/workflows/ci.yml/badge.svg)
+
+
 Run a node.js script and watch process execution on a terminal dashboard.
 
 ```shell

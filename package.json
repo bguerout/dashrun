@@ -40,11 +40,11 @@
     "commander": "9.2.0"
   },
   "devDependencies": {
-    "eslint": "8.14.0",
-    "eslint-config-prettier": "8.5.0",
-    "eslint-plugin-mocha": "10.0.4",
+    "eslint": "7.21.0",
+    "eslint-config-prettier": "8.1.0",
+    "eslint-plugin-mocha": "8.1.0",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-prettier": "3.3.1",
     "mocha": "9.2.2",
     "nyc": "15.1.0",
     "prettier": "2.6.2",
