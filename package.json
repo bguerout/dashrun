@@ -5,13 +5,13 @@
   "main": "index.js",
   "bin": "bin/cli.js",
   "scripts": {
+    "hooks": "git config core.hooksPath .tools/git-hooks && chmod +x .tools/git-hooks/*",
     "start": "node index.js",
     "test": "mocha --recursive --exit --timeout 1000 test/**/*.test.js",
     "test:coverage": "nyc --reporter=html --report-dir .coverage mocha --recursive --exit --timeout 500 test/",
     "lint": "eslint index.js test/",
     "ci": "npm install && npm test && npm run lint",
-    "hooks": "git config core.hooksPath .tools/git-hooks && chmod +x .tools/git-hooks/*",
-    "publish": "bash .tools/publish.sh main"
+    "release": "bash .tools/release.sh main"
   },
   "engines": {
     "node": ">= 10"
