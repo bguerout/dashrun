@@ -1,6 +1,6 @@
 {
   "name": "dashrun",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Run a node.js script and watch its memory usage on a terminal dashboard",
   "main": "index.js",
   "bin": "bin/cli.js",
