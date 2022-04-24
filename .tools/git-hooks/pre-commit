@@ -2,3 +2,4 @@
 set -euo pipefail
 
 npm ci
+npm run validate
